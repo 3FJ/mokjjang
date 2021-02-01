@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934014308380",
+    "project_id": "mokjjang-caa75",
+    "storage_bucket": "mokjjang-caa75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934014308380:android:5e737970524536846b0fd9",
+        "android_client_info": {
+          "package_name": "com.example.mokjjang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934014308380-0oe297sobnjdagaq1908lvuqgfml8hum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzrL5IgY2yjzzDsp2l29AhFB5KVZSHjzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934014308380-0oe297sobnjdagaq1908lvuqgfml8hum.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

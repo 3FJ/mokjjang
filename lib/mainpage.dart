@@ -29,7 +29,7 @@ class _MyHomePageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     const PrimaryColor = const Color(0xFFffa8a8);
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text('mokJJANG'),
           backgroundColor: PrimaryColor,
