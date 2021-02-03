@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'mainpage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -11,9 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MOKJJANG',
+      //title: 'MOKJJANG',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        //primarySwatch: Colors.pink,
       ),
       home: Mainpage(title : 'mokJJANG'),
     );

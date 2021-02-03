@@ -27,18 +27,15 @@ class _MyHomePageState extends State<Mainpage> {
 
   @override
   Widget build(BuildContext context) {
-    const PrimaryColor = const Color(0xFFffa8a8);
+    const PrimaryColor = const Color(0xFFEA7979);
     return Scaffold(
         //resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          title: Text('mokJJANG'),
-          backgroundColor: PrimaryColor,
-        ),
         body: _children[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: _onTap,
             currentIndex: _currentIndex,
+            selectedItemColor: PrimaryColor,
             items: [
               new BottomNavigationBarItem(
                 icon: Icon(Icons.assignment),
