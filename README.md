@@ -29,7 +29,7 @@
 
 
 ### [Information page]
-![information](https://user-images.githubusercontent.com/67946662/107038167-7740f800-67ff-11eb-9a8e-4ae73f5113bc.PNG)
+<img width="366" alt="스크린샷 2021-02-05 오후 10 45 19" src="https://user-images.githubusercontent.com/64635685/107041773-3e575200-6804-11eb-811b-d68a9a84cf3c.png">
 ```
 * 각종 가축 전염병 발생 현황을 가축 종류별로 확인할 수 있습니다.
 * 버튼 클릭시 특정 가축의 전염병 현황이 최신순으로 나열된 리스트가 보입니다.
