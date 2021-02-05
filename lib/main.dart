@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'homescreen.dart';
 import 'mainpage.dart';
 
 void main() async {
@@ -10,15 +11,21 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //title: 'MOKJJANG',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        //primarySwatch: Colors.pink,
       ),
-      home: Mainpage(title : 'mokJJANG'),
+      home: HomePage(),
     );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen();
   }
 }

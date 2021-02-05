@@ -38,21 +38,21 @@ class ManualState extends State<Manual> {
           children: <Widget>[
             RaisedButton.icon(
                 onPressed: () {
-                  launch(('tel://'));
+                  //url_launcher 사용. 실제로 버튼 클릭시 전화 화면 나옴.
+                  launch(('tel://1588-9060'));
                 },
                 icon: Icon(Icons.call,  color:Color(0xFF87003A)),
                 label: Text('가축방역기관에 전화하여 신고하기', style: TextStyle(fontSize: 15))),
             ListTile(
               tileColor: Colors.white,
-              //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
               leading: ImageIcon(
                 AssetImage("images/cow.png"),
                 color: Colors.red[300],
                 size: 50.0,
               ),
               title: Text(' 브루셀라병', style: TextStyle(color: Colors.grey[800], fontSize: 20.0, fontWeight: FontWeight.bold),),
-              //contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
               minVerticalPadding: 30,
+              //버튼 클릭시 alertdialog가 나와 각 병에 대한 예방책/대응방법을 알려줌
               onTap: () {
                 return showDialog(
                   context: context,
@@ -110,9 +110,9 @@ class ManualState extends State<Manual> {
                                 ),
                               ],
                             ),
-
                             FlatButton(
                               child: Text('ⓧ', style: TextStyle(color: Colors.red[300], fontSize: 35.0),),
+                              //버튼을 누를 시 다이얼로그 사라짐.
                               onPressed: () { Navigator.of(context).pop(); },
                             ),
                           ],

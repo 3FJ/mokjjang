@@ -2,6 +2,7 @@
     package="com.example.mokjjang">
    <application
         android:label="mokjjang"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

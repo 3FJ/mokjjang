@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 
 class Information extends StatefulWidget {
@@ -8,8 +11,57 @@ class Information extends StatefulWidget {
   InformationState createState() => InformationState();
 }
 
+Future<List> getDisease() async{
+  final response = await http.get('https://211.237.50.150:7080/openapi/c223f079b3f3fa8ceca2f27fee137295b233108b4e6e3fb0dd866403ae8bfede/json/Grid_20151204000000000316_1/41000/41840');
+  if (response.statusCode == 200) {
+    final result = jsonDecode(response.body);
+    final rowData = result['Grid_20151204000000000316_1']['row'] as List;
+    List<Row> listModel = rowData.map((rowJson) => Row.fromJson(rowJson)).toList();
+    return listModel;
+  } else {
+    throw Exception('Failed to load Disease Info');
+  }
+}
+
+class Row {
+  int rOWNUM;
+  String lKNTSNM;
+  String fARMNM;
+  String fARMLOCPLC;
+  String oCCRRNCDE;
+  String lVSTCKSPCNM;
+  String dGNSSENGNNM;
+
+  Row(
+      {this.rOWNUM,
+        this.lKNTSNM,
+        this.fARMNM,
+        this.fARMLOCPLC,
+        this.oCCRRNCDE,
+        this.lVSTCKSPCNM,
+        this.dGNSSENGNNM,
+      }
+      );
+
+  Row.fromJson(Map<String, dynamic> json) {
+    rOWNUM = json['ROW_NUM'];
+    lKNTSNM = json['LKNTS_NM'];
+    fARMNM = json['FARM_NM'];
+    fARMLOCPLC = json['FARM_LOCPLC'];
+    oCCRRNCDE = json['OCCRRNC_DE'];
+    lVSTCKSPCNM = json['LVSTCKSPC_NM'];
+    dGNSSENGNNM = json['DGNSS_ENGN_NM'];
+  }
+}
+
 class InformationState extends State<Information> {
+  Future<List> currentDisease;
+
   @override
+  void initState() {
+    super.initState();
+    currentDisease = getDisease();
+  }
 
   Widget build(BuildContext context) {
     const PrimaryColor = const Color(0xFFffa8a8);
@@ -23,7 +75,7 @@ class InformationState extends State<Information> {
               const SizedBox(height: 20.0),
               Text(
                 '현재 전염병 발생 정보',
-                style: TextStyle(fontFamily: "cafe", color: Colors.white, fontSize: 27.0),
+                style: TextStyle(color: Colors.white, fontSize: 27.0),
               ),
               const SizedBox(height: 7.0),
               Text(
@@ -80,399 +132,180 @@ class InformationState extends State<Information> {
                     child: TabBarView(
                       children: <Widget>[
                         // 소 관련 질병 발생 정보
-                        ListView(
-                          children: [
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('브루셀라병'),
-                              subtitle: Text('최영환 / 경상남도 밀양시 삼량진읍 용성리'),
-                              trailing: Text('2021/01/29'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('철환농장 / \n경상남도 창원시 의창구 복면 신촌리'),
-                              trailing: Text('2021/01/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('브루셀라병'),
-                              subtitle: Text('우종대 / 울산광역시 울주군 범서읍 척과리'),
-                              trailing: Text('2021/01/23'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('브루셀라병'),
-                              subtitle: Text('김동국 / 경상남도 밀양시 삼량진읍 임천리'),
-                              trailing: Text('2021/01/22'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('브루셀라병'),
-                              subtitle: Text('김상철 / 경상남도 밀양시 삼량진읍 용성리'),
-                              trailing: Text('2021/01/22'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('이봉형 / 울산광역시 울주군 두동면 월평리'),
-                              trailing: Text('2021/01/21'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('류종영 / 경상남도 밀양시 삼량진읍 용성리'),
-                              trailing: Text('2021/01/21'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('정은농장 / 경상남도 진주시 이반성면 장안리'),
-                              trailing: Text('2021/01/21'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('이경용 / 경상남도 함안군 군북면 하림리'),
-                              trailing: Text('2021/01/20'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/cow.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('결핵병'),
-                              subtitle: Text('자혜목장 / 경상남도 사천시 서포면 자혜리'),
-                              trailing: Text('2021/01/14'),
-                            ),
-                          ],
+                        FutureBuilder<List>(
+                          future: currentDisease,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                itemCount: 20, // 최근 발생한 전염병 정보를 20개 보여줍니다
+                                itemBuilder: (context, index) {
+                                  List<Row> eachAnimal = snapshot.data.where((i) => i.lVSTCKSPCNM.contains("소")).toList(); // 소 관련 정보만을 담는 eachAnimal
+                                  eachAnimal.sort((a, b) => b.oCCRRNCDE.compareTo(a.oCCRRNCDE)); // 최근 발생한 전염병 순으로 정렬
+                                  Row eachInfo = eachAnimal.elementAt(index); // 발생한 전염병에 대한 자세한 정보
+                                  return
+                                    ListTile(
+                                      leading:ImageIcon(
+                                        AssetImage("images/cow.png"),
+                                        size: 50.0,),
+                                      title: Text(eachInfo.lKNTSNM), // 해당 동물에 발생한 질병명
+                                      subtitle: Text(eachInfo.fARMNM + "\n" + eachInfo.fARMLOCPLC), // 농장 위치 정보
+                                      trailing: Text(eachInfo.oCCRRNCDE.toString().substring(0,4) + "." +
+                                          eachInfo.oCCRRNCDE.toString().substring(4,6) + "." + eachInfo.oCCRRNCDE.toString().substring(6)), // 전염병 발생 날짜
+                                    );
+                                },
+                                separatorBuilder: (context, index) { return Divider(); },
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            // 기본적으로 로딩 Spinner를 보여줍니다.
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
+                                )
+                            );
+                          },
                         ),
                         // 벌 관련 질병 발생 정보
-                        ListView(
-                          children: [
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('정남혁 / 전라남도 화순군 한천면 정리'),
-                              trailing: Text('2020/12/28'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('서주석 / 충청북도 보은군 회인면 애곡리'),
-                              trailing: Text('2020/12/01'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('양수현 / \n제주특별자치도 서귀포시 표선면 표선리'),
-                              trailing: Text('2020/12/01'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('강조훈 / 경상남도 사천시 사천읍 두량리'),
-                              trailing: Text('2020/11/30'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('드보라 양봉 2 / \n강원도 양구군 방산면 고방산리'),
-                              trailing: Text('2020/11/30'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('이원근 / 경상북도 의성군 옥산면 감계리'),
-                              trailing: Text('2020/11/26'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('안길석 / 전라남도 고흥군 영남면 우천리'),
-                              trailing: Text('2020/11/19'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('홍병세 / 경상남도 산청군 금서면 수철리'),
-                              trailing: Text('2020/11/13'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('홍지원 / 전라북도 임실군 신덕면 월성리'),
-                              trailing: Text('2020/11/10'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/swarm.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('전주봉 / 강원도 평창군 미탄면 창리'),
-                              trailing: Text('2020/11/10'),
-                            ),
-                          ],
+                        FutureBuilder<List>(
+                          future: currentDisease,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                itemCount: 20, // 최근 발생한 전염병 정보를 20개 보여줍니다
+                                itemBuilder: (context, index) {
+                                  List<Row> eachAnimal = snapshot.data.where((i) => i.lVSTCKSPCNM.contains("벌")).toList(); // 벌 관련 정보만을 담는 eachAnimal
+                                  eachAnimal.sort((a, b) => b.oCCRRNCDE.compareTo(a.oCCRRNCDE)); // 최근 발생한 전염병 순으로 정렬
+                                  Row eachInfo = eachAnimal.elementAt(index); // 발생한 전염병에 대한 자세한 정보
+                                  return
+                                    ListTile(
+                                      leading:ImageIcon(
+                                        AssetImage("images/swarm.png"),
+                                        size: 50.0,),
+                                      title: Text(eachInfo.lKNTSNM), // 해당 동물에 발생한 질병명
+                                      subtitle: Text(eachInfo.fARMNM + "\n" + eachInfo.fARMLOCPLC), // 농장 위치 정보
+                                      trailing: Text(eachInfo.oCCRRNCDE.toString().substring(0,4) + "." +
+                                          eachInfo.oCCRRNCDE.toString().substring(4,6) + "." + eachInfo.oCCRRNCDE.toString().substring(6)), // 전염병 발생 날짜
+                                    );
+                                },
+                                separatorBuilder: (context, index) { return Divider(); },
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            // 기본적으로 로딩 Spinner를 보여줍니다.
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
+                                )
+                            );
+                          },
                         ),
-                        // 양 관련 질병 발생 정보
-                        ListView(
-                          children: [
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/rubber-duck.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('낭충봉아부패병'),
-                              subtitle: Text('전주봉 / 강원도 평창군 미탄면 창리'),
-                              trailing: Text('2020/11/10'),
-                            ),
-                          ],
+                        // 오리 관련 질병 발생 정보
+                        FutureBuilder<List>(
+                          future: currentDisease,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                itemCount: 20, // 최근 발생한 전염병 정보를 20개 보여줍니다
+                                itemBuilder: (context, index) {
+                                  List<Row> eachAnimal = snapshot.data.where((i) => i.lVSTCKSPCNM.contains("오리")).toList(); // 오리 관련 정보만을 담는 eachAnimal
+                                  eachAnimal.sort((a, b) => b.oCCRRNCDE.compareTo(a.oCCRRNCDE)); // 최근 발생한 전염병 순으로 정렬
+                                  Row eachInfo = eachAnimal.elementAt(index); // 발생한 전염병에 대한 자세한 정보
+                                  return
+                                    ListTile(
+                                      leading:ImageIcon(
+                                        AssetImage("images/rubber-duck.png"),
+                                        size: 50.0,),
+                                      title: Text(eachInfo.lKNTSNM), // 해당 동물에 발생한 질병명
+                                      subtitle: Text(eachInfo.fARMNM + "\n" + eachInfo.fARMLOCPLC), // 농장 위치 정보
+                                      trailing: Text(eachInfo.oCCRRNCDE.toString().substring(0,4) + "." +
+                                          eachInfo.oCCRRNCDE.toString().substring(4,6) + "." + eachInfo.oCCRRNCDE.toString().substring(6)), // 전염병 발생 날짜
+                                    );
+                                },
+                                separatorBuilder: (context, index) { return Divider(); },
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            // 기본적으로 로딩 Spinner를 보여줍니다.
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
+                                )
+                            );
+                          },
                         ),
                         // 돼지 관련 질병 발생 정보
-                        ListView(
-                          children: [
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('승하농장 / \n제주특별자치도 서귀포시 안덕면 상창리'),
-                              trailing: Text('2020/12/29'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('태흥종축 영농조합법인 해남지점 / \n전라남도 해남군 황상면 관춘리'),
-                              trailing: Text('2020/11/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('제주도니유전센터 / \n제주특별자치도 제주시 구좌읍 세화리'),
-                              trailing: Text('2020/11/25'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('참나무농장 / 제주특별자치도 제주시 해안동'),
-                              trailing: Text('2020/11/24'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('제주특별자치도 제주시 애월읍 광령2리'),
-                              trailing: Text('2020/11/18'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('우리농장 / \n제주특별자치도 제주시 한림읍 상대리'),
-                              trailing: Text('2020/10/30'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('제주양돈 / \n제주특별자치도 제주시 애월읍 고성리'),
-                              trailing: Text('2020/10/14'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('우경농장 / \n제주특별자치도 제주시 한림읍 금능리'),
-                              trailing: Text('2020/10/08'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('제주도니유전센터 / \n제주특별자치도 제주시 구좌읍 세화리'),
-                              trailing: Text('2020/09/28'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/pig.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('돼지생식기호흡기증후군'),
-                              subtitle: Text('섬진농장 / 전라북도 임실군 덕치면 물우리'),
-                              trailing: Text('2020/08/14'),
-                            ),
-                          ],
+                        FutureBuilder<List>(
+                          future: currentDisease,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                itemCount: 20, // 최근 발생한 전염병 정보를 20개 보여줍니다
+                                itemBuilder: (context, index) {
+                                  List<Row> eachAnimal = snapshot.data.where((i) => i.lVSTCKSPCNM.contains("돼지")).toList(); // 돼지 관련 정보만을 담는 eachAnimal
+                                  eachAnimal.sort((a, b) => b.oCCRRNCDE.compareTo(a.oCCRRNCDE)); // 최근 발생한 전염병 순으로 정렬
+                                  Row eachInfo = eachAnimal.elementAt(index); // 발생한 전염병에 대한 자세한 정보
+                                  return
+                                    ListTile(
+                                      leading:ImageIcon(
+                                        AssetImage("images/pig.png"),
+                                        size: 50.0,),
+                                      title: Text(eachInfo.lKNTSNM), // 해당 동물에 발생한 질병명
+                                      subtitle: Text(eachInfo.fARMNM + "\n" + eachInfo.fARMLOCPLC), // 농장 위치 정보
+                                      trailing: Text(eachInfo.oCCRRNCDE.toString().substring(0,4) + "." +
+                                          eachInfo.oCCRRNCDE.toString().substring(4,6) + "." + eachInfo.oCCRRNCDE.toString().substring(6)), // 전염병 발생 날짜
+                                    );
+                                },
+                                separatorBuilder: (context, index) { return Divider(); },
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            // 기본적으로 로딩 Spinner를 보여줍니다.
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
+                                )
+                            );
+                          },
                         ),
                         // 닭 관련 질병 발생 정보
-                        ListView(
-                          children: [
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('영포양계영농협동조합법인 / \n경상북도 포항시 북구 청하면 신흥리'),
-                              trailing: Text('2021/01/31'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('정기농장 / 경기도 이천시 율면 신추리'),
-                              trailing: Text('2021/01/30'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('청산농장 / 경기도 안성시 공도읍 마정리'),
-                              trailing: Text('2021/01/29'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('호현농장 / 경기도 이천시 장호원읍 와현리'),
-                              trailing: Text('2021/01/28'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('유화농장 / 경기도 안성시 보개면 동신리'),
-                              trailing: Text('2021/01/28'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('영화농장 / 경기도 안성시 일죽면 장암리'),
-                              trailing: Text('2021/01/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('신한농장 / 경기도 파주시 적성면 어유지리'),
-                              trailing: Text('2021/01/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('계림농장 / 경기도 포천시 신북면 삼성당리'),
-                              trailing: Text('2021/01/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('서울종계장 / \n경기도 이천시 장호원읍 와현리'),
-                              trailing: Text('2021/01/27'),
-                            ),
-                            ListTile(
-                              leading: ImageIcon(
-                                AssetImage("images/chicken.png"),
-                                size: 50.0,
-                              ),
-                              title: Text('고병원성조류인플루엔자'),
-                              subtitle: Text('경기도 화성시 양감면 사창리'),
-                              trailing: Text('2021/01/24'),
-                            ),
-                          ],
-                        )
+                        FutureBuilder<List>(
+                          future: currentDisease,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.separated(
+                                itemCount: 20, // 최근 발생한 전염병 정보를 20개 보여줍니다
+                                itemBuilder: (context, index) {
+                                  List<Row> eachAnimal = snapshot.data.where((i) => i.lVSTCKSPCNM.contains("닭")).toList(); // 닭 관련 정보만을 담는 eachAnimal
+                                  eachAnimal.sort((a, b) => b.oCCRRNCDE.compareTo(a.oCCRRNCDE)); // 최근 발생한 전염병 순으로 정렬
+                                  Row eachInfo = eachAnimal.elementAt(index); // 발생한 전염병에 대한 자세한 정보
+                                  return
+                                    ListTile(
+                                      leading:ImageIcon(
+                                        AssetImage("images/chicken.png"),
+                                        size: 50.0,),
+                                      title: Text(eachInfo.lKNTSNM), // 해당 동물에 발생한 질병명
+                                      subtitle: Text(eachInfo.fARMNM + "\n" + eachInfo.fARMLOCPLC), // 농장 위치 정보
+                                      trailing: Text(eachInfo.oCCRRNCDE.toString().substring(0,4) + "." +
+                                          eachInfo.oCCRRNCDE.toString().substring(4,6) + "." + eachInfo.oCCRRNCDE.toString().substring(6)), // 전염병 발생 날짜
+                                    );
+                                },
+                                separatorBuilder: (context, index) { return Divider(); },
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            // 기본적으로 로딩 Spinner를 보여줍니다.
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.pink),
+                                )
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
