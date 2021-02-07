@@ -1,4 +1,13 @@
 ## :cow:mokJJANG [목짱]:cow:
+
+------------
+
+### 2021 DSC KR Solution Challenge Hackathon TOP 10 수상작
+
+
+![3FJ 팀](https://user-images.githubusercontent.com/64635685/107149663-2f57d780-699d-11eb-97eb-110435147817.png)
+
+
 ------------
 
 ### 개발배경
